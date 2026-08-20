@@ -833,7 +833,7 @@
   <div class="loader" id="loader" aria-label="Loading the film sequence">
     <div class="loader__mark">
       <p class="loader__number" aria-hidden="true">+30<sup>%</sup></p>
-      <div class="loader__meta">LIVE-IN International<br>Bratislava — morning light<br>5.04 s · 75 frames</div>
+      <div class="loader__meta">LIVE-IN International<br>Bratislava — morning light<br>5.04 s · 121 frames</div>
     </div>
     <div class="loader__foot">
       <span class="micro" id="loader-label">Preparing film</span>
@@ -917,7 +917,7 @@
           <span class="telemetry__chapter micro" id="telemetry-chapter">Your apartment</span>
           <div class="telemetry__track"><span class="telemetry__fill"></span></div>
           <span class="telemetry__yield micro" id="telemetry-yield">Yield +0.0 %</span>
-          <span class="telemetry__frame micro" id="telemetry-frame">F 0001 / 0075</span>
+          <span class="telemetry__frame micro" id="telemetry-frame">F 0001 / 0121</span>
           <span class="scroll-cue micro">Scroll</span>
         </div>
       </div>
@@ -1011,9 +1011,9 @@
     (() => {
       "use strict";
 
-      const FRAME_COUNT = 75;
+      const FRAME_COUNT = 121;
       const FRAME_PAD = 4;
-      const LERP_FACTOR = 0.115;
+      const LERP_FACTOR = 0.1;
       const DWELL_WIDTH = 0.04;
       const DWELL_PEAK = 2.75;
       const LUT_SIZE = 2400;
@@ -1133,23 +1133,14 @@
         sequenceDistance = Math.max(1, rect.height - window.innerHeight);
       }
 
-      function drawFrame(index) {
-        const resolved = nearestLoaded(Math.max(0, Math.min(FRAME_COUNT - 1, index)));
-        if (resolved < 0 || resolved === lastDrawn) return;
-        const image = activeStore.images[resolved];
-        if (!image || !image.naturalWidth) return;
-
+      function placeImage(image) {
         const width = canvas.width;
         const height = canvas.height;
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, width, height);
-
         let scale;
         let drawWidth;
         let drawHeight;
         let x;
         let y;
-
         if (useMobileFrames) {
           scale = width / image.naturalWidth;
           drawWidth = width;
@@ -1163,9 +1154,34 @@
           x = (width - drawWidth) / 2;
           y = (height - drawHeight) / 2;
         }
-
         ctx.drawImage(image, x, y, drawWidth, drawHeight);
-        lastDrawn = resolved;
+      }
+
+      function drawFrame(frameFloat) {
+        const clamped = Math.max(0, Math.min(FRAME_COUNT - 1, frameFloat));
+        const base = Math.floor(clamped);
+        const next = Math.min(FRAME_COUNT - 1, base + 1);
+        const mix = clamped - base;
+        const resolvedBase = nearestLoaded(base);
+        if (resolvedBase < 0) return;
+        const resolvedNext = mix > 0.01 ? nearestLoaded(next) : resolvedBase;
+        const key = resolvedBase * 1000 + resolvedNext + Math.round(mix * 64) / 100000;
+        if (key === lastDrawn) return;
+        const imageBase = activeStore.images[resolvedBase];
+        if (!imageBase || !imageBase.naturalWidth) return;
+
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        placeImage(imageBase);
+        if (resolvedNext !== resolvedBase) {
+          const imageNext = activeStore.images[resolvedNext];
+          if (imageNext && imageNext.naturalWidth) {
+            ctx.globalAlpha = mix;
+            placeImage(imageNext);
+            ctx.globalAlpha = 1;
+          }
+        }
+        lastDrawn = key;
       }
 
       const rawAtEffective = new Float64Array(LUT_SIZE + 1);
@@ -1269,12 +1285,11 @@
         if (!pageVisible || reducedMotion) return;
         const raw = rawScrollProgress();
         const effective = remapProgress(raw);
-        targetFrame = Math.round(effective * (FRAME_COUNT - 1));
+        targetFrame = effective * (FRAME_COUNT - 1);
         currentFrame += (targetFrame - currentFrame) * LERP_FACTOR;
-        const frame = Math.round(currentFrame);
-        drawFrame(frame);
+        drawFrame(currentFrame);
         updateChapters(effective);
-        updateInterface(raw, effective, frame);
+        updateInterface(raw, effective, Math.round(currentFrame));
         rafId = requestAnimationFrame(tick);
       }
 
@@ -1413,7 +1428,7 @@
           const atOrBelowNearest = effective - SNAP_EFFECTIVES[nearest] > 0.02;
           targetY = zoneStart + rawForEffective(SNAP_EFFECTIVES[atOrBelowNearest ? nearest : nearest - 1]) * sequenceDistance;
         }
-        animateScrollTo(targetY, 900);
+        animateScrollTo(targetY, 1250);
       }
 
       window.addEventListener("wheel", onWheelSnap, { passive: false });

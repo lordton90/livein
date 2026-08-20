@@ -766,7 +766,7 @@ HOME_TRANSLATIONS = [
     ("<title>LIVE-IN International — Váš byt. Vyšší výnos.</title>",
      "<title>LIVE-IN International — Your apartment. Higher yield.</title>"),
     ("Bratislava — ranné svetlo", "Bratislava — morning light"),
-    ("5,04 s · 75 snímok", "5.04 s · 75 frames"),
+    ("5,04 s · 121 snímok", "5.04 s · 121 frames"),
     ("Pripravujem film", "Preparing film"),
     ("Načítava sa filmová sekvencia", "Loading the film sequence"),
     ("Správa krátkodobých prenájmov</div>", "Short-term rental management</div>"),
