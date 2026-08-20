@@ -877,6 +877,7 @@ def build_en_home():
     src = src.replace('href="clanky/"', 'href="articles/"').replace('href="o-nas/"', 'href="about-us/"')
     src = src.replace('href="kontakt/"', 'href="contact/"')
     src = src.replace('>Služby</a>', '>Services</a>').replace('>Na predaj</a>', '>For sale</a>')
+    src = src.replace('>Zarezervuj si ↗</a>', '>Book now ↗</a>')
     src = src.replace('>Články</a>', '>Articles</a>').replace('>O nás</a>', '>About</a>')
     src = src.replace('>Kontakt</a>', '>Contact</a>')
     src = src.replace('href="en/" class="lang-switch" lang="en">EN', 'href="../" class="lang-switch" lang="sk">SK')
