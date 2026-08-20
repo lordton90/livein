@@ -21,9 +21,9 @@
     :root {
       --night: #0a0f16;
       --night-soft: #101722;
-      --paper: #f0ead9;
+      --paper: #ffffff;
       --alloy: #9aa3ad;
-      --amber: #ff870d;
+      --amber: #ff8a17;
       --signal: #e23b2f;
       --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
       --data: "IBM Plex Mono", ui-monospace, monospace;
@@ -326,7 +326,7 @@
       font-weight: 760;
       font-variation-settings: "wdth" var(--title-wdth);
       letter-spacing: -.068em;
-      line-height: .82;
+      line-height: .97;
       text-transform: uppercase;
       text-wrap: balance;
       text-shadow: 0 2px 26px rgba(10, 15, 22, .55);
@@ -357,7 +357,7 @@
 
     .chapter--hero { align-content: start; padding-top: 15vh; }
     .chapter--hero .chapter__copy { grid-column: 1 / 11; }
-    .chapter--hero .chapter__title { font-size: clamp(62px, 10.2vw, 168px); line-height: .8; }
+    .chapter--hero .chapter__title { font-size: clamp(60px, 9.8vw, 160px); line-height: 1.0; }
     .chapter--hero .chapter__deck { margin-left: .3vw; max-width: 27rem; }
 
     .chapter--right .chapter__copy { grid-column: 8 / 13; }
@@ -475,7 +475,7 @@
       z-index: 10;
       padding: clamp(100px, 13vw, 190px) var(--gutter);
       background: var(--paper);
-      color: var(--night);
+      color: #404041;
     }
 
     .editorial__head {
@@ -494,7 +494,7 @@
       font-weight: 790;
       font-variation-settings: "wdth" 86;
       letter-spacing: -.075em;
-      line-height: .82;
+      line-height: .9;
       text-transform: uppercase;
     }
 
@@ -516,7 +516,7 @@
 
     .service {
       padding-top: 14px;
-      border-top: 2px solid var(--night);
+      border-top: 2px solid #404041;
     }
 
     .service h3 {
@@ -591,7 +591,7 @@
 
     .stat-tile {
       padding: 16px 0 18px;
-      border-top: 2px solid var(--night);
+      border-top: 2px solid #404041;
     }
 
     .stat-tile strong {
@@ -619,8 +619,8 @@
       gap: 32px;
       min-height: 52px;
       padding: 0 18px;
-      background: var(--night);
-      border: 1px solid var(--night);
+      background: #263238;
+      border: 1px solid #263238;
       color: var(--paper);
       font-family: var(--data);
       font-size: 11px;
@@ -631,7 +631,7 @@
     }
 
     .yield-cta::after { content: "→"; font-size: 15px; }
-    .yield-cta:hover { background: transparent; color: var(--night); }
+    .yield-cta:hover { background: transparent; color: #263238; }
 
     .editorial__note {
       display: grid;
@@ -665,9 +665,9 @@
       grid-template-columns: 1fr auto;
       gap: 28px;
       padding: 44px var(--gutter) max(44px, env(safe-area-inset-bottom));
-      border-top: 1px solid rgba(240, 234, 217, .14);
-      background: var(--night);
-      color: var(--alloy);
+      border-top: 1px solid rgba(10, 15, 22, .18);
+      background: #fff;
+      color: #5d6670;
     }
 
     .site-footer p { margin: 0; max-width: 50rem; line-height: 2; }
@@ -728,7 +728,7 @@
       }
 
       .chapter__eyebrow { margin-bottom: 14px; }
-      .chapter__title { font-size: clamp(46px, 14vw, 76px); line-height: .84; }
+      .chapter__title { font-size: clamp(46px, 14vw, 76px); line-height: .98; }
       .chapter__deck { max-width: 24rem; margin-top: 14px; font-size: 17px; }
       .chapter__fact { margin-top: 16px; }
 

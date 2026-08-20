@@ -122,7 +122,7 @@ def nav(root, lang, current):
     home = root if lang == "sk" else root + "en/"
     return f"""<header class="site-nav">
   <a class="site-nav__brand" href="{home}" aria-label="LIVE-IN International">
-    <img src="{root}assets/img/logo-on-dark.png" alt="LIVE-IN International" width="335" height="141">
+    <img src="{root}assets/img/logo-on-light.png" alt="LIVE-IN International" width="335" height="141">
   </a>
   <nav class="site-nav__links" aria-label="{'Hlavná navigácia' if lang == 'sk' else 'Main navigation'}">
     {' '.join(links)}
@@ -140,7 +140,7 @@ def footer(root, lang):
     return f"""<footer class="site-footer">
   <div class="site-footer__grid">
     <div>
-      <p class="site-footer__brand"><img src="{root}assets/img/logo-on-dark.png" alt="LIVE-IN International" width="335" height="141"></p>
+      <p class="site-footer__brand"><img src="{root}assets/img/logo-on-light.png" alt="LIVE-IN International" width="335" height="141"></p>
       <p>{t["footer_tag"]}</p>
     </div>
     <div>
