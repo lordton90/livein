@@ -8,7 +8,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0a0f16">
+  <meta name="theme-color" content="#ffffff">
   <meta name="description" content="LIVE-IN International — short-term rental management in Bratislava and Košice. Increase your rental income by 20–30%.">
   <title>LIVE-IN International — Your apartment. Higher yield.</title>
   <link rel="icon" href="../assets/img/favicon-32.png" sizes="32x32">
@@ -29,7 +29,7 @@
       --data: "IBM Plex Mono", ui-monospace, monospace;
       --gutter: clamp(20px, 4.2vw, 72px);
       --ease-out: cubic-bezier(.22, 1, .36, 1);
-      --line: rgba(240, 234, 217, .17);
+      --line: rgba(64, 64, 65, .18);
       --frame-progress: 0;
       --title-wdth: 82;
     }
@@ -37,8 +37,8 @@
     *, *::before, *::after { box-sizing: border-box; }
 
     html {
-      background: var(--night);
-      color: var(--paper);
+      background: #ffffff;
+      color: #404041;
       font-family: var(--display);
       scroll-behavior: auto;
     }
@@ -46,8 +46,8 @@
     body {
       margin: 0;
       min-width: 320px;
-      background: var(--night);
-      color: var(--paper);
+      background: #ffffff;
+      color: #404041;
       overflow-x: clip;
     }
 
@@ -76,7 +76,7 @@
       display: grid;
       grid-template-rows: 1fr auto;
       padding: max(24px, env(safe-area-inset-top)) var(--gutter) max(24px, env(safe-area-inset-bottom));
-      background: var(--night);
+      background: #ffffff;
       transition: clip-path 900ms var(--ease-out), visibility 900ms;
       clip-path: inset(0 0 0 0);
     }
@@ -123,7 +123,7 @@
       text-transform: uppercase;
     }
 
-    .loader__meta { text-align: right; color: var(--alloy); }
+    .loader__meta { text-align: right; color: #666666; }
 
     .loader__foot {
       display: grid;
@@ -138,7 +138,7 @@
       position: relative;
       height: 1px;
       overflow: hidden;
-      background: rgba(240, 234, 217, .24);
+      background: rgba(64, 64, 65, .22);
     }
 
     .loader__fill,
@@ -161,7 +161,7 @@
       min-height: 70px;
       padding: max(16px, env(safe-area-inset-top)) var(--gutter) 12px;
       pointer-events: none;
-      text-shadow: 0 1px 14px rgba(10, 15, 22, .65);
+      text-shadow: 0 1px 14px rgba(255, 255, 255, .75);
       transition: opacity 400ms ease, visibility 400ms;
     }
 
@@ -181,7 +181,7 @@
       display: block;
       height: 40px;
       width: auto;
-      filter: drop-shadow(0 1px 10px rgba(10, 15, 22, .5));
+      filter: drop-shadow(0 1px 10px rgba(255, 255, 255, .6));
     }
 
     .site-header__center {
@@ -189,7 +189,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 4px 18px;
-      color: rgba(240, 234, 217, .72);
+      color: rgba(38, 50, 56, .78);
       pointer-events: auto;
     }
 
@@ -197,17 +197,17 @@
       text-decoration: none;
       padding: 6px 0;
       border-bottom: 2px solid transparent;
-      color: rgba(240, 234, 217, .82);
+      color: rgba(38, 50, 56, .82);
     }
 
-    .site-header__center a:hover { color: var(--paper); }
-    .site-header__center a.lang-switch { color: var(--amber); }
-    .site-header__end { justify-self: end; text-align: right; color: rgba(240, 234, 217, .72); }
+    .site-header__center a:hover { color: #263238; }
+    .site-header__center a.lang-switch { color: #c96a00; }
+    .site-header__end { justify-self: end; text-align: right; color: rgba(38, 50, 56, .78); }
 
     .sequence {
       position: relative;
       height: 500vh;
-      background: var(--night);
+      background: #ffffff;
     }
 
     .stage {
@@ -216,7 +216,7 @@
       width: 100%;
       height: 100svh;
       overflow: hidden;
-      background: var(--night);
+      background: #ffffff;
       isolation: isolate;
     }
 
@@ -233,9 +233,9 @@
       inset: 0;
       z-index: 1;
       background:
-        linear-gradient(180deg, rgba(10, 15, 22, .55) 0%, rgba(10, 15, 22, .10) 30%, transparent 48%),
-        linear-gradient(0deg, rgba(10, 15, 22, .74) 0%, transparent 34%),
-        linear-gradient(90deg, rgba(10, 15, 22, .38) 0%, transparent 38%);
+        linear-gradient(180deg, rgba(255, 255, 255, .6) 0%, rgba(255, 255, 255, .12) 30%, transparent 48%),
+        linear-gradient(0deg, rgba(255, 255, 255, .78) 0%, transparent 34%),
+        linear-gradient(90deg, rgba(255, 255, 255, .45) 0%, transparent 38%);
       opacity: var(--scrim-opacity, .78);
       transition: opacity 500ms ease;
       pointer-events: none;
@@ -249,8 +249,8 @@
         90deg,
         transparent 0,
         transparent calc(8.333% - 1px),
-        rgba(240, 234, 217, .06) calc(8.333% - 1px),
-        rgba(240, 234, 217, .06) 8.333%
+        rgba(64, 64, 65, .05) calc(8.333% - 1px),
+        rgba(64, 64, 65, .05) 8.333%
       );
       mask-image: linear-gradient(180deg, transparent, black 14%, black 82%, transparent);
       opacity: .5;
@@ -284,12 +284,22 @@
       align-self: center;
     }
 
+    .chapter--right .chapter__copy::before,
+    .chapter--index .chapter__copy::before {
+      content: "";
+      position: absolute;
+      inset: -14% -16%;
+      z-index: -1;
+      background: radial-gradient(ellipse at 50% 45%, rgba(255, 255, 255, .78), rgba(255, 255, 255, .4) 55%, transparent 78%);
+      pointer-events: none;
+    }
+
     .chapter__eyebrow {
       display: flex;
       align-items: center;
       gap: 12px;
       margin: 0 0 22px;
-      color: var(--paper);
+      color: #263238;
     }
 
     .chapter__eyebrow::before {
@@ -329,7 +339,7 @@
       line-height: .97;
       text-transform: uppercase;
       text-wrap: balance;
-      text-shadow: 0 2px 26px rgba(10, 15, 22, .55);
+      text-shadow: 0 2px 24px rgba(255, 255, 255, .7);
     }
 
     .chapter__deck {
@@ -340,10 +350,11 @@
       line-height: 1.25;
       letter-spacing: -.025em;
       text-wrap: balance;
-      text-shadow: 0 1px 18px rgba(10, 15, 22, .6);
+      text-shadow: 0 1px 16px rgba(255, 255, 255, .75);
     }
 
     .chapter__fact {
+      text-shadow: 0 1px 12px rgba(255, 255, 255, .85);
       display: grid;
       grid-template-columns: auto 1fr;
       gap: 14px;
@@ -351,7 +362,7 @@
       margin-top: 32px;
       padding-top: 12px;
       border-top: 1px solid var(--line);
-      color: var(--alloy);
+      color: #666666;
       max-width: 30rem;
     }
 
@@ -360,10 +371,11 @@
     .chapter--hero .chapter__title { font-size: clamp(60px, 9.8vw, 160px); line-height: 1.0; }
     .chapter--hero .chapter__deck { margin-left: .3vw; max-width: 27rem; }
 
+    .chapter--right { align-content: start; padding-top: 15vh; }
     .chapter--right .chapter__copy { grid-column: 8 / 13; }
     .chapter--left .chapter__copy { grid-column: 1 / 6; }
 
-    .chapter--index { align-content: center; }
+    .chapter--index { align-content: start; padding-top: 18vh; }
     .chapter--index .chapter__copy { grid-column: 7 / 13; z-index: 2; }
     .chapter--index .chapter__title { font-size: clamp(44px, 6.2vw, 100px); }
     .chapter__giant-index {
@@ -377,7 +389,7 @@
       font-variation-settings: "wdth" 78;
       letter-spacing: -.09em;
       line-height: .7;
-      -webkit-text-stroke: 1px rgba(240, 234, 217, .3);
+      -webkit-text-stroke: 1px rgba(64, 64, 65, .3);
       transform: translateY(-48%);
       opacity: 0;
       transition: opacity 600ms ease, font-variation-settings 1000ms var(--ease-out);
@@ -390,7 +402,7 @@
 
     .chapter--final {
       align-content: end;
-      background: linear-gradient(0deg, rgba(10, 15, 22, .9), rgba(10, 15, 22, 0) 62%);
+      background: linear-gradient(0deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, 0) 62%);
     }
 
     .chapter--final .chapter__copy {
@@ -413,9 +425,9 @@
       min-width: min(100%, 300px);
       min-height: 54px;
       padding: 0 18px;
-      border: 1px solid rgba(240, 234, 217, .56);
-      background: rgba(10, 15, 22, .18);
-      color: var(--paper);
+      border: 1px solid rgba(38, 50, 56, .6);
+      background: rgba(255, 255, 255, .4);
+      color: #263238;
       font-family: var(--data);
       font-size: 11px;
       letter-spacing: .08em;
@@ -425,7 +437,7 @@
     }
 
     .cta::after { content: "↗"; font-size: 16px; }
-    .cta:hover { background: var(--paper); border-color: var(--paper); color: var(--night); }
+    .cta:hover { background: #263238; border-color: #263238; color: #ffffff; }
 
     .telemetry {
       position: absolute;
@@ -444,15 +456,15 @@
     }
 
     .telemetry__chapter { min-width: 13ch; }
-    .telemetry__yield { color: var(--amber); min-width: 12ch; text-align: right; }
-    .telemetry__frame { color: var(--alloy); }
+    .telemetry__yield { color: #c96a00; min-width: 12ch; text-align: right; }
+    .telemetry__frame { color: #666666; }
 
     .scroll-cue {
       display: inline-grid;
       grid-template-columns: auto 18px;
       align-items: center;
       gap: 9px;
-      color: var(--paper);
+      color: #263238;
     }
 
     .scroll-cue::after {
@@ -693,8 +705,8 @@
 
       .stage__scrim {
         background:
-          linear-gradient(180deg, rgba(10, 15, 22, .52), transparent 21%),
-          linear-gradient(0deg, rgba(10, 15, 22, .88), transparent 29%);
+          linear-gradient(180deg, rgba(255, 255, 255, .6), transparent 21%),
+          linear-gradient(0deg, rgba(255, 255, 255, .92), transparent 29%);
       }
 
       .stage__grid { opacity: .3; }
@@ -707,8 +719,8 @@
         display: block;
         width: 100%;
         height: 56.25vw;
-        border-top: 1px solid rgba(240, 234, 217, .22);
-        border-bottom: 1px solid rgba(240, 234, 217, .22);
+        border-top: 1px solid rgba(64, 64, 65, .22);
+        border-bottom: 1px solid rgba(64, 64, 65, .22);
         pointer-events: none;
       }
 
@@ -797,7 +809,7 @@
   <div class="loader" id="loader" aria-label="Loading the film sequence">
     <div class="loader__mark">
       <p class="loader__number" aria-hidden="true">+30<sup>%</sup></p>
-      <div class="loader__meta">LIVE-IN International<br>Bratislava — blue hour<br>5.04 s · 75 frames</div>
+      <div class="loader__meta">LIVE-IN International<br>Bratislava — morning light<br>5.04 s · 75 frames</div>
     </div>
     <div class="loader__foot">
       <span class="micro" id="loader-label">Preparing film</span>
@@ -808,7 +820,7 @@
 
   <header class="site-header" aria-label="Site information">
     <a class="site-header__brand" href="./" aria-label="LIVE-IN International — home">
-      <img src="../assets/img/logo-on-dark.png" alt="LIVE-IN International" width="335" height="141">
+      <img src="../assets/img/logo-on-light.png" alt="LIVE-IN International" width="335" height="141">
     </a>
     <nav class="site-header__center micro" aria-label="Main navigation">
       <a href="services/">Services</a>
@@ -1105,7 +1117,7 @@
 
         const width = canvas.width;
         const height = canvas.height;
-        ctx.fillStyle = "#0a0f16";
+        ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, width, height);
 
         let scale;

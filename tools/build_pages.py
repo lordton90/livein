@@ -749,7 +749,7 @@ HOME_TRANSLATIONS = [
      "LIVE-IN International — short-term rental management in Bratislava and Košice. Increase your rental income by 20–30%."),
     ("<title>LIVE-IN International — Váš byt. Vyšší výnos.</title>",
      "<title>LIVE-IN International — Your apartment. Higher yield.</title>"),
-    ("Bratislava — modrá hodina", "Bratislava — blue hour"),
+    ("Bratislava — ranné svetlo", "Bratislava — morning light"),
     ("5,04 s · 75 snímok", "5.04 s · 75 frames"),
     ("Pripravujem film", "Preparing film"),
     ("Načítava sa filmová sekvencia", "Loading the film sequence"),

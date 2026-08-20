@@ -1,6 +1,6 @@
 {
   "source": {
-    "filename": "hero.mp4",
+    "filename": "hero-light.mp4",
     "duration": 5.04,
     "resolution": "1924x1076",
     "fps": 24.0,
@@ -14,19 +14,19 @@
     "naming_pattern": "frame-{NNNN}.webp"
   },
   "recommended_scroll_height": "300vh",
-  "created": "2026-08-20T09:55:36",
+  "created": "2026-08-20T12:48:56",
   "desktop": {
     "resolution": "1920x1080",
     "actual_count": 75,
-    "total_bytes": 5533030,
-    "avg_frame_bytes": 73773,
-    "total_mb": 5.28
+    "total_bytes": 6103834,
+    "avg_frame_bytes": 81384,
+    "total_mb": 5.82
   },
   "mobile": {
     "resolution": "960x540",
     "actual_count": 75,
-    "total_bytes": 2216378,
-    "avg_frame_bytes": 29551,
-    "total_mb": 2.11
+    "total_bytes": 2412748,
+    "avg_frame_bytes": 32169,
+    "total_mb": 2.3
   }
 }

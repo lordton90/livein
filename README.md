@@ -23,7 +23,7 @@ clanky/<slug>/ · en/articles/<slug>/                  — 3 články v oboch ja
 frames/                 — 75 snímok WebP (desktop 1920×1080, mobil 960×540)
 assets/fonts/           — self-hostované fonty Archivo + IBM Plex Mono
 assets/img/properties/  — fotografie nehnuteľností (zo starého webu)
-assets/source/hero.mp4  — zdrojové video (5 s, 1080p, Artlist AI)
+assets/source/hero-light.mp4 — zdrojové video (denné svetlo, 5 s, 1080p, Artlist AI); hero.mp4 = pôvodná nočná verzia
 content/                — extrahovaný obsah starého webu (JSON + články)
 tools/build_pages.py    — generátor podstránok (python3 tools/build_pages.py)
 ```
