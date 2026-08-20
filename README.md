@@ -37,7 +37,7 @@ v slovenčine aj angličtine s prepínačom jazyka.
 Texty vychádzajú z verejných informácií na live-in.international (08/2026):
 výnos o 20–30 % vyšší než dlhodobý nájom, kompletná správa s províziou 17 %,
 dlhodobá správa 10 %, garantovaný nájom na 1–5 rokov, Londýn od 2018,
-Slovensko od januára 2023. Kontakt: info@live-in.co.uk.
+Slovensko od januára 2023. Kontakt: info@live-in.international, +421 940 213 613, Čermeľská cesta 3, Košice.
 
 ## Technika
 
