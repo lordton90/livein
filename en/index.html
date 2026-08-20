@@ -1391,17 +1391,9 @@
         requestAnimationFrame(step);
       }
 
-      function onWheelSnap(event) {
-        if (reducedMotion) return;
+      function snapStep(dir) {
         const zoneStart = sequenceTop;
         const zoneEnd = sequenceTop + sequenceDistance;
-        const y = window.scrollY;
-        const dir = event.deltaY > 0 ? 1 : -1;
-        const inZone = dir > 0 ? (y >= zoneStart - 2 && y < zoneEnd - 2) : (y > zoneStart + 2 && y <= zoneEnd + 2);
-        if (!inZone) return;
-        event.preventDefault();
-        if (snapAnimating || performance.now() < snapCooldownUntil || Math.abs(event.deltaY) < 4) return;
-
         const effective = remapProgress(rawScrollProgress());
         let nearest = 0;
         for (let i = 1; i < SNAP_EFFECTIVES.length; i += 1) {
@@ -1425,7 +1417,49 @@
         animateScrollTo(targetY, 1250);
       }
 
+      function onWheelSnap(event) {
+        if (reducedMotion) return;
+        const zoneStart = sequenceTop;
+        const zoneEnd = sequenceTop + sequenceDistance;
+        const y = window.scrollY;
+        const dir = event.deltaY > 0 ? 1 : -1;
+        const inZone = dir > 0 ? (y >= zoneStart - 2 && y < zoneEnd - 2) : (y > zoneStart + 2 && y <= zoneEnd + 2);
+        if (!inZone) return;
+        event.preventDefault();
+        if (snapAnimating || performance.now() < snapCooldownUntil || Math.abs(event.deltaY) < 4) return;
+        snapStep(dir);
+      }
+
       window.addEventListener("wheel", onWheelSnap, { passive: false });
+
+      // touch: one swipe = one chapter
+      let touchStartY = null;
+      let touchZoneActive = false;
+
+      window.addEventListener("touchstart", (event) => {
+        if (reducedMotion) return;
+        const y = window.scrollY;
+        touchZoneActive = y >= sequenceTop - 2 && y < sequenceTop + sequenceDistance - 2;
+        touchStartY = event.touches[0].clientY;
+      }, { passive: true });
+
+      window.addEventListener("touchmove", (event) => {
+        if (!touchZoneActive) return;
+        if (event.cancelable) event.preventDefault();
+      }, { passive: false });
+
+      window.addEventListener("touchend", (event) => {
+        if (!touchZoneActive || touchStartY === null) return;
+        const delta = touchStartY - event.changedTouches[0].clientY;
+        touchStartY = null;
+        touchZoneActive = false;
+        if (snapAnimating || performance.now() < snapCooldownUntil) return;
+        if (Math.abs(delta) < 24) return;
+        const dir = delta > 0 ? 1 : -1;
+        const y = window.scrollY;
+        if (dir < 0 && y <= sequenceTop + 2) return;
+        snapStep(dir);
+      }, { passive: true });
 
       window.addEventListener("resize", () => {
         resizeCanvas();
