@@ -808,16 +808,16 @@ HOME_TRANSLATIONS = [
     ("Byt, ktorý pracuje za vás.", "An apartment that works for you."),
     ("Od marketingu a dynamických cien po odovzdanie kľúčov — jeden partner pre celý prenájom v Bratislave a Košiciach.",
      "From marketing and dynamic pricing to key handover — one partner for the whole rental in Bratislava and Košice."),
-    ("Krátkodobá správa</h3>", "Short-term management</h3>"),
+    (">Krátkodobá správa</a>", ">Short-term management</a>"),
     ("Kompletný manažment prenájmu s províziou 17 % z príjmu. Transparentný reporting.",
      "Complete rental management with a 17% commission on income. Transparent reporting."),
-    ("Garantovaný nájom</h3>", "Guaranteed rent</h3>"),
+    (">Garantovaný nájom</a>", ">Guaranteed rent</a>"),
     ("Fixný mesačný príjem na 1–5 rokov bez ohľadu na obsadenosť bytu.",
      "Fixed monthly income for 1–5 years regardless of occupancy."),
-    ("Dlhodobá správa</h3>", "Long-term management</h3>"),
+    (">Dlhodobá správa</a>", ">Long-term management</a>"),
     ("Správa klasického dlhodobého prenájmu s províziou 10 %.",
      "Classic long-term rental management with a 10% commission."),
-    ("Predaj nehnuteľností</h3>", "Real estate sales</h3>"),
+    (">Predaj nehnuteľností</a>", ">Real estate sales</a>"),
     ("Predaj investičných bytov v Bratislave a Košiciach.",
      "Sale of investment apartments in Bratislava and Košice."),
     ("Obývačka apartmánu s výhľadom na Bratislavský hrad", "Apartment living room overlooking Bratislava Castle"),
@@ -857,6 +857,8 @@ HOME_TRANSLATIONS = [
     ("Priemerná obsadenosť našich bytov v roku 2024", "Average occupancy of our apartments in 2024"),
     ("Provízia za kompletnú správu — žiadne skryté poplatky", "Commission for full management — no hidden fees"),
     (">Vyžiadajte si bezplatnú analýzu</a>", ">Request a free analysis</a>"),
+    ("LIVE-IN International — Váš byt. Vyšší výnos.\n  Scroll-driven film: prémiový apartmán, Bratislava za modrej hodiny.\n  Fakty overené z live-in.international (08/2026).",
+     "LIVE-IN International — Your apartment. Higher yield.\n  Scroll-driven film: a premium apartment, Bratislava in daylight.\n  Facts verified from live-in.international (08/2026)."),
 ]
 
 
@@ -870,6 +872,7 @@ def build_en_home():
     src = src.replace('src="frames/', 'src="../frames/')
     src = src.replace('createFrameStore("frames/', 'createFrameStore("../frames/')
     # nav links (SK → EN targets), language switch back to SK root
+    src = src.replace('href="sluzby/#', 'href="services/#')
     src = src.replace('href="sluzby/"', 'href="services/"').replace('href="na-predaj/"', 'href="for-sale/"')
     src = src.replace('href="clanky/"', 'href="articles/"').replace('href="o-nas/"', 'href="about-us/"')
     src = src.replace('href="kontakt/"', 'href="contact/"')
