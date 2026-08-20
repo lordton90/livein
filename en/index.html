@@ -1420,7 +1420,12 @@
         }
         let targetY;
         if (dir > 0) {
-          if (nearest >= SNAP_EFFECTIVES.length - 1) targetY = zoneEnd;
+          if (nearest >= SNAP_EFFECTIVES.length - 1) {
+            const editorialHead = document.querySelector(".editorial__head");
+            targetY = editorialHead
+              ? window.scrollY + editorialHead.getBoundingClientRect().top - 90
+              : zoneEnd + window.innerHeight;
+          }
           else targetY = zoneStart + rawForEffective(SNAP_EFFECTIVES[nearest + 1]) * sequenceDistance;
         } else if (nearest === 0) {
           targetY = zoneStart;
