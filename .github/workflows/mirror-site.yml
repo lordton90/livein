@@ -1,0 +1,45 @@
+name: mirror-site
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: Site to mirror
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror site and push to analysis branch
+        env:
+          BASE_URL: ${{ inputs.base_url }}
+        run: |
+          set -uo pipefail
+          mkdir mirror && cd mirror
+          # Grab sitemaps first, then a bounded recursive mirror of the HTML
+          curl -sSL "$BASE_URL/sitemap.xml" -o sitemap.xml || true
+          curl -sSL "$BASE_URL/sitemap_index.xml" -o sitemap_index.xml || true
+          curl -sSL "$BASE_URL/page-sitemap.xml" -o page-sitemap.xml || true
+          curl -sSL "$BASE_URL/post-sitemap.xml" -o post-sitemap.xml || true
+          curl -sSL "$BASE_URL/robots.txt" -o robots.txt || true
+          wget --recursive --level=3 --no-parent --adjust-extension \
+               --reject-regex '(wp-json|xmlrpc|\?replytocom|/feed|/wp-content/uploads/.*\.(jpg|jpeg|png|gif|webp|mp4|pdf|svg|woff2?|ttf))' \
+               --accept html,xml,txt --tries=2 --timeout=20 --wait=0.3 \
+               --user-agent="Mozilla/5.0 (X11; Linux x86_64) Chrome/120" \
+               -e robots=off "$BASE_URL/" || true
+          find . -type f | head -200
+          du -sh .
+          cd ..
+          git init -b analysis repo
+          cd repo
+          git config user.name "mirror-bot"
+          git config user.email "actions@users.noreply.github.com"
+          cp -r ../mirror/* .
+          git add -A
+          git commit -m "Mirror of $BASE_URL"
+          git push --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" analysis
