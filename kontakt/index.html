@@ -30,8 +30,40 @@
     <div class="contact-tile"><span class="micro">Email</span><a href="mailto:info@live-in.international">info@live-in.international</a></div>
     <div class="contact-tile"><span class="micro">Kde pôsobíme</span><p>Bratislava · Košice · Londýn</p></div>
   </div>
-  <div style="margin-top:clamp(28px,4vw,48px);display:flex;gap:16px;flex-wrap:wrap">
-    <a class="paper-cta" href="mailto:info@live-in.international?subject=Bezplatná analýza">Napíšte nám</a>
+
+  <form class="contact-form" action="https://formsubmit.co/info@live-in.international" method="POST">
+    <h2>Zanechajte nám správu</h2>
+    <input type="hidden" name="_subject" value="Nová správa z webu LIVE-IN International">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="" id="form-next">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="cf-name">Meno a priezvisko</label>
+        <input id="cf-name" name="name" type="text" required autocomplete="name">
+      </div>
+      <div class="form-field">
+        <label for="cf-email">Email</label>
+        <input id="cf-email" name="email" type="email" required autocomplete="email">
+      </div>
+      <div class="form-field form-field--full">
+        <label for="cf-phone">Telefón (nepovinné)</label>
+        <input id="cf-phone" name="phone" type="tel" autocomplete="tel">
+      </div>
+      <div class="form-field form-field--full">
+        <label for="cf-msg">Správa</label>
+        <textarea id="cf-msg" name="message" required placeholder="Napíšte nám, o akú nehnuteľnosť ide a čo potrebujete…"></textarea>
+      </div>
+      <div class="form-field--full">
+        <button class="paper-cta" type="submit">Odoslať správu</button>
+        <p class="form-note">Odoslaním správy súhlasíte, že vás budeme kontaktovať na uvedený email alebo telefón.</p>
+      </div>
+    </div>
+  </form>
+  <script>document.getElementById("form-next").value = new URL("dakujeme/", window.location.href).href;</script>
+
+  <div style="margin-top:clamp(28px,4vw,48px)">
     <a class="paper-cta" href="https://booking.live-in.international/en/properties">Zarezervuj si pobyt</a>
   </div>
 </main>

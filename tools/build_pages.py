@@ -411,14 +411,44 @@ def build_about(lang, path, current, root):
 
 # ---------------------------------------------------------------- contact
 
+FORM = {
+    "sk": {
+        "form_h": "Zanechajte nám správu",
+        "name": "Meno a priezvisko", "email": "Email", "phone": "Telefón (nepovinné)",
+        "msg": "Správa", "msg_ph": "Napíšte nám, o akú nehnuteľnosť ide a čo potrebujete…",
+        "send": "Odoslať správu",
+        "note": "Odoslaním správy súhlasíte, že vás budeme kontaktovať na uvedený email alebo telefón.",
+        "subject": "Nová správa z webu LIVE-IN International",
+        "thanks_slug": "kontakt/dakujeme/index.html",
+        "thanks_url": "dakujeme/",
+        "thanks_title": "Ďakujeme za správu",
+        "thanks_lead": "Vaša správa bola odoslaná. Ozveme sa vám čo najskôr — zvyčajne do 24 hodín.",
+        "thanks_back": "← Späť na domovskú stránku",
+    },
+    "en": {
+        "form_h": "Leave us a message",
+        "name": "Full name", "email": "Email", "phone": "Phone (optional)",
+        "msg": "Message", "msg_ph": "Tell us about your property and what you need…",
+        "send": "Send message",
+        "note": "By sending the message you agree to be contacted at the email or phone provided.",
+        "subject": "New message from the LIVE-IN International website",
+        "thanks_slug": "en/contact/thank-you/index.html",
+        "thanks_url": "thank-you/",
+        "thanks_title": "Thank you for your message",
+        "thanks_lead": "Your message has been sent. We will get back to you as soon as possible — usually within 24 hours.",
+        "thanks_back": "← Back to the homepage",
+    },
+}
+
+
 def build_contact(lang, path, current, root):
     t = T[lang]
+    f = FORM[lang]
     title = "Kontakt" if lang == "sk" else "Contact"
     lead = ("Zanechajte nám správu – ozveme sa vám s bezplatnou analýzou výnosového potenciálu vašej nehnuteľnosti."
             if lang == "sk" else
             "Leave us a message – we will get back to you with a free analysis of your property's earning potential.")
     addr_label = "Adresa" if lang == "sk" else "Address"
-    write_us = "Napíšte nám" if lang == "sk" else "Write to us"
     body = page_hero(root, "LIVE-IN International / Bratislava · Košice · " + ("Londýn" if lang == "sk" else "London"), title, lead, "frame-0070")
     body += f"""<main class="section">
   <div class="contact-grid">
@@ -427,14 +457,57 @@ def build_contact(lang, path, current, root):
     <div class="contact-tile"><span class="micro">Email</span><a href="mailto:{EMAIL}">{EMAIL}</a></div>
     <div class="contact-tile"><span class="micro">{t["where"]}</span><p>{t["where_val"]}</p></div>
   </div>
-  <div style="margin-top:clamp(28px,4vw,48px);display:flex;gap:16px;flex-wrap:wrap">
-    <a class="paper-cta" href="mailto:{EMAIL}?subject={'Bezplatná analýza' if lang == 'sk' else 'Free analysis'}">{write_us}</a>
+
+  <form class="contact-form" action="https://formsubmit.co/{EMAIL}" method="POST">
+    <h2>{f["form_h"]}</h2>
+    <input type="hidden" name="_subject" value="{f["subject"]}">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="" id="form-next">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="cf-name">{f["name"]}</label>
+        <input id="cf-name" name="name" type="text" required autocomplete="name">
+      </div>
+      <div class="form-field">
+        <label for="cf-email">{f["email"]}</label>
+        <input id="cf-email" name="email" type="email" required autocomplete="email">
+      </div>
+      <div class="form-field form-field--full">
+        <label for="cf-phone">{f["phone"]}</label>
+        <input id="cf-phone" name="phone" type="tel" autocomplete="tel">
+      </div>
+      <div class="form-field form-field--full">
+        <label for="cf-msg">{f["msg"]}</label>
+        <textarea id="cf-msg" name="message" required placeholder="{f["msg_ph"]}"></textarea>
+      </div>
+      <div class="form-field--full">
+        <button class="paper-cta" type="submit">{f["send"]}</button>
+        <p class="form-note">{f["note"]}</p>
+      </div>
+    </div>
+  </form>
+  <script>document.getElementById("form-next").value = new URL("{f["thanks_url"]}", window.location.href).href;</script>
+
+  <div style="margin-top:clamp(28px,4vw,48px)">
     <a class="paper-cta" href="{BOOKING}">{'Zarezervuj si pobyt' if lang == 'sk' else 'Book a stay'}</a>
   </div>
 </main>
 """
     write(path, head(f"{title} — LIVE-IN International", lead, root, lang)
           + nav(root, lang, current) + body + footer(root, lang))
+
+    # thank-you page (one level deeper than the contact page)
+    troot = "../" + root
+    tbody = page_hero(troot, "LIVE-IN International", f["thanks_title"], f["thanks_lead"], "frame-0070")
+    home = troot if lang == "sk" else troot + "en/"
+    tbody += f"""<main class="section">
+  <p><a class="paper-cta" href="{home}">{f["thanks_back"]}</a></p>
+</main>
+"""
+    write(f["thanks_slug"], head(f"{f['thanks_title']} — LIVE-IN International", f["thanks_lead"], troot, lang)
+          + nav(troot, lang, current) + tbody + footer(troot, lang))
 
 
 # ---------------------------------------------------------------- properties
