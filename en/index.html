@@ -1464,7 +1464,10 @@
         const final = el.textContent;
         const m = final.match(/^([^\d]*)([\d\u00A0 ]+)(?:([.,])(\d+))?([^\d]*)$/);
         if (!m) return;
-        const pre = m[1], sep = m[3] || "", dec = m[4] || "", suf = m[5];
+        const pre = m[1], sep = m[3] || "", dec = m[4] || "";
+        let suf = m[5];
+        const trail = m[2].match(/[\s\u00A0]+$/);
+        if (trail) suf = trail[0] + suf;
         const decimals = dec.length;
         const target = parseFloat(m[2].replace(/[\s\u00A0]/g, "") + (dec ? "." + dec : ""));
         const t0 = performance.now();
