@@ -98,7 +98,9 @@ def head(title, desc, root, lang):
   <meta name="theme-color" content="#0a0f16">
   <meta name="description" content="{html.escape(desc, quote=True)}">
   <title>{html.escape(title)}</title>
-  <link rel="icon" href="data:,">
+  <link rel="icon" href="{root}assets/img/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="{root}assets/img/favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="{root}assets/img/favicon-192.png">
   <link href="{root}assets/fonts/fonts.css" rel="stylesheet">
   <link href="{root}assets/site.css" rel="stylesheet">
 </head>
@@ -119,7 +121,9 @@ def nav(root, lang, current):
     links.append(f'<a class="site-nav__lang" href="{root}{other_href.lstrip("/") or "."}" lang="{t["other"]}">{t["lang_label"]}</a>')
     home = root if lang == "sk" else root + "en/"
     return f"""<header class="site-nav">
-  <a class="site-nav__brand" href="{home}">LIVE-IN International</a>
+  <a class="site-nav__brand" href="{home}" aria-label="LIVE-IN International">
+    <img src="{root}assets/img/logo-on-dark.png" alt="LIVE-IN International" width="335" height="141">
+  </a>
   <nav class="site-nav__links" aria-label="{'Hlavná navigácia' if lang == 'sk' else 'Main navigation'}">
     {' '.join(links)}
   </nav>
@@ -136,7 +140,7 @@ def footer(root, lang):
     return f"""<footer class="site-footer">
   <div class="site-footer__grid">
     <div>
-      <p class="site-footer__brand">LIVE-IN International</p>
+      <p class="site-footer__brand"><img src="{root}assets/img/logo-on-dark.png" alt="LIVE-IN International" width="335" height="141"></p>
       <p>{t["footer_tag"]}</p>
     </div>
     <div>
@@ -789,6 +793,22 @@ HOME_TRANSLATIONS = [
     ('aria-label="Hlavná navigácia"', 'aria-label="Main navigation"'),
     ('aria-label="Odkazy"', 'aria-label="Links"'),
     (">Rezervácie ↗</a>", ">Booking ↗</a>"),
+    ('aria-label="LIVE-IN International — domov"', 'aria-label="LIVE-IN International — home"'),
+    ("Ročný príjem z 3-izbového bytu v Starom Meste", "Annual income from a 3-room apartment in the Old Town"),
+    ('aria-label="Porovnanie ročného príjmu: dlhodobý prenájom 16 800 eur, krátkodobý prenájom so správou LIVE-IN 21 930 eur — rozdiel 30,5 percenta."',
+     'aria-label="Annual income comparison: long-term rental 16,800 euros, short-term rental managed by LIVE-IN 21,930 euros — a 30.5 percent difference."'),
+    (">Dlhodobý prenájom</text>", ">Long-term rental</text>"),
+    (">Krátkodobý s LIVE-IN</text>", ">Short-term with LIVE-IN</text>"),
+    ("<title>Dlhodobý prenájom: 16 800 € ročne (1 400 € mesačne)</title>",
+     "<title>Long-term rental: €16,800 per year (€1,400 per month)</title>"),
+    ("<title>Krátkodobý prenájom so správou LIVE-IN: cca 21 930 € ročne pri 70 % obsadenosti</title>",
+     "<title>Short-term rental managed by LIVE-IN: approx. €21,930 per year at 70% occupancy</title>"),
+    ("Reálny prípad z praxe LIVE-IN: 3-izbový byt v Starom Meste Bratislavy, máj 2025. Krátkodobý prenájom pri priemernej obsadenosti 70 %.",
+     "A real case from LIVE-IN's practice: a 3-room apartment in Bratislava's Old Town, May 2025. Short-term rental at an average occupancy of 70%."),
+    ("<strong>+30,5 %</strong>", "<strong>+30.5 %</strong>"),
+    ("Vyšší ročný príjem oproti dlhodobému prenájmu", "Higher annual income vs. a long-term lease"),
+    ("Priemerná obsadenosť našich bytov v roku 2024", "Average occupancy of our apartments in 2024"),
+    ("Provízia za kompletnú správu — žiadne skryté poplatky", "Commission for full management — no hidden fees"),
 ]
 
 
@@ -798,6 +818,7 @@ def build_en_home():
         src = src.replace(a, b)
     # asset paths one level deeper
     src = src.replace('href="assets/', 'href="../assets/')
+    src = src.replace('src="assets/', 'src="../assets/')
     src = src.replace('src="frames/', 'src="../frames/')
     src = src.replace('createFrameStore("frames/', 'createFrameStore("../frames/')
     # nav links (SK → EN targets), language switch back to SK root

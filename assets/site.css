@@ -10,7 +10,7 @@
   --ink: #0a0f16;
   --alloy: #9aa3ad;
   --alloy-dark: #5d6670;
-  --amber: #d99a4e;
+  --amber: #ff870d;
   --signal: #e23b2f;
   --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --data: "IBM Plex Mono", ui-monospace, monospace;
@@ -66,13 +66,13 @@ a { color: inherit; }
 }
 
 .site-nav__brand {
-  font-size: 14px;
-  font-weight: 720;
-  letter-spacing: -.02em;
-  text-transform: uppercase;
-  text-decoration: none;
+  display: block;
   margin-right: auto;
 }
+
+.site-nav__brand img { display: block; height: 38px; width: auto; }
+
+.site-footer__brand img { display: block; height: 44px; width: auto; }
 
 .site-nav__links {
   display: flex;

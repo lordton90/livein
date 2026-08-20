@@ -11,7 +11,9 @@
   <meta name="theme-color" content="#0a0f16">
   <meta name="description" content="LIVE-IN International — správa krátkodobých prenájmov v Bratislave a Košiciach. Zvýšte príjem z prenájmu o 20–30 %.">
   <title>LIVE-IN International — Váš byt. Vyšší výnos.</title>
-  <link rel="icon" href="data:,">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="assets/img/favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="assets/img/favicon-192.png">
   <link rel="preload" href="assets/fonts/Archivo-100-900-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/Archivo-100-900-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link href="assets/fonts/fonts.css" rel="stylesheet">
@@ -21,7 +23,7 @@
       --night-soft: #101722;
       --paper: #f0ead9;
       --alloy: #9aa3ad;
-      --amber: #d99a4e;
+      --amber: #ff870d;
       --signal: #e23b2f;
       --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
       --data: "IBM Plex Mono", ui-monospace, monospace;
@@ -158,16 +160,28 @@
       gap: 20px;
       min-height: 70px;
       padding: max(16px, env(safe-area-inset-top)) var(--gutter) 12px;
-      mix-blend-mode: difference;
       pointer-events: none;
+      text-shadow: 0 1px 14px rgba(10, 15, 22, .65);
+      transition: opacity 400ms ease, visibility 400ms;
     }
+
+    body.past-film .site-header {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    body.past-film .site-header a { pointer-events: none; }
 
     .site-header__brand {
       justify-self: start;
-      font-size: 13px;
-      font-weight: 720;
-      letter-spacing: -.02em;
-      text-transform: uppercase;
+      pointer-events: auto;
+    }
+
+    .site-header__brand img {
+      display: block;
+      height: 40px;
+      width: auto;
+      filter: drop-shadow(0 1px 10px rgba(10, 15, 22, .5));
     }
 
     .site-header__center {
@@ -524,43 +538,78 @@
 
     .service .micro { color: var(--night); opacity: .55; }
 
-    .contact-sheet {
+    .yield-figure {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: clamp(10px, 1.2vw, 20px);
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+      gap: clamp(24px, 3.5vw, 56px);
+      align-items: start;
       margin-top: clamp(48px, 7vw, 104px);
     }
 
-    .shot {
-      position: relative;
-      margin: 0;
-      overflow: hidden;
-      background: var(--night-soft);
+    .yield-chart h3 {
+      margin: 0 0 22px;
+      font-size: clamp(20px, 2vw, 28px);
+      font-weight: 730;
+      font-variation-settings: "wdth" 90;
+      letter-spacing: -.035em;
+      line-height: 1.1;
+      text-wrap: balance;
     }
 
-    .shot--lead { grid-column: 1 / 9; }
-    .shot--top { grid-column: 9 / 13; align-self: start; margin-top: 10vw; }
-    .shot--low { grid-column: 3 / 7; margin-top: 2vw; }
-    .shot--end { grid-column: 7 / 13; margin-top: 8vw; }
+    .yield-chart svg { display: block; width: 100%; height: auto; }
+    .yield-chart .bar { transition: opacity 200ms ease; }
+    .yield-chart .bar:hover { opacity: .84; }
 
-    .shot img {
+    .yield-chart .chart-label {
+      font-family: var(--data);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      fill: rgba(10, 15, 22, .62);
+    }
+
+    .yield-chart .chart-value {
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 760;
+      font-variation-settings: "wdth" 90;
+      letter-spacing: -.03em;
+      fill: var(--night);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .yield-note {
+      margin: 18px 0 0;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: rgba(10, 15, 22, .6);
+      max-width: 34rem;
+    }
+
+    .yield-stats { display: grid; gap: clamp(14px, 1.8vw, 22px); }
+
+    .stat-tile {
+      padding: 16px 0 18px;
+      border-top: 2px solid var(--night);
+    }
+
+    .stat-tile strong {
       display: block;
-      width: 100%;
-      height: auto;
-      filter: saturate(.88) contrast(1.03);
-      transition: transform 900ms var(--ease-out), filter 500ms ease;
+      font-size: clamp(40px, 4.6vw, 68px);
+      font-weight: 790;
+      font-variation-settings: "wdth" 88;
+      letter-spacing: -.05em;
+      line-height: .9;
+      font-variant-numeric: tabular-nums;
     }
 
-    .shot:hover img { transform: scale(1.018); filter: saturate(1); }
+    .stat-tile--accent strong { color: var(--amber); }
 
-    .shot figcaption {
-      position: absolute;
-      inset: auto 0 0;
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 12px;
-      background: rgba(10, 15, 22, .78);
-      color: var(--paper);
+    .stat-tile span {
+      display: block;
+      margin-top: 8px;
+      color: rgba(10, 15, 22, .68);
     }
 
     .editorial__note {
@@ -698,11 +747,9 @@
       .editorial__title { font-size: 15vw; }
       .editorial__aside { justify-self: start; }
       .services { grid-template-columns: 1fr 1fr; }
-      .contact-sheet { grid-template-columns: repeat(6, 1fr); gap: 10px; }
-      .shot--lead { grid-column: 1 / 7; }
-      .shot--top { grid-column: 3 / 7; margin-top: 12vw; }
-      .shot--low { grid-column: 1 / 5; margin-top: 0; }
-      .shot--end { grid-column: 1 / 7; margin-top: 12vw; }
+      .yield-figure { grid-template-columns: 1fr; }
+      .yield-chart .chart-value { font-size: 30px; }
+      .yield-chart .chart-label { font-size: 14px; }
       .editorial__note { grid-template-columns: 1fr; gap: 32px; }
       .editorial__note p { justify-self: start; }
       .site-footer { grid-template-columns: 1fr; }
@@ -739,7 +786,9 @@
   </div>
 
   <header class="site-header" aria-label="Informácie o stránke">
-    <div class="site-header__brand">LIVE-IN International</div>
+    <a class="site-header__brand" href="./" aria-label="LIVE-IN International — domov">
+      <img src="assets/img/logo-on-dark.png" alt="LIVE-IN International" width="335" height="141">
+    </a>
     <nav class="site-header__center micro" aria-label="Hlavná navigácia">
       <a href="sluzby/">Služby</a>
       <a href="na-predaj/">Na predaj</a>
@@ -846,23 +895,38 @@
         </div>
       </div>
 
-      <div class="contact-sheet">
-        <figure class="shot shot--lead">
-          <img src="frames/desktop/frame-0006.webp" alt="Obývačka apartmánu s výhľadom na Bratislavský hrad" loading="lazy" width="1920" height="1080">
-          <figcaption class="micro"><span>Obývačka / modrá hodina</span><span>F 0006</span></figcaption>
-        </figure>
-        <figure class="shot shot--top">
-          <img src="frames/desktop/frame-0026.webp" alt="Detail sedačky a lampy pred panoramatickými oknami" loading="lazy" width="1920" height="1080">
-          <figcaption class="micro"><span>Interiér</span><span>F 0026</span></figcaption>
-        </figure>
-        <figure class="shot shot--low">
-          <img src="frames/desktop/frame-0050.webp" alt="Bratislavský hrad a mesto za oknami apartmánu" loading="lazy" width="1920" height="1080">
-          <figcaption class="micro"><span>Hrad</span><span>F 0050</span></figcaption>
-        </figure>
-        <figure class="shot shot--end">
-          <img src="frames/desktop/frame-0070.webp" alt="Panoráma Dunaja a mosta SNP z apartmánu" loading="lazy" width="1920" height="1080">
-          <figcaption class="micro"><span>Nábrežie</span><span>F 0070</span></figcaption>
-        </figure>
+      <div class="yield-figure">
+        <div class="yield-chart">
+          <h3>Ročný príjem z 3-izbového bytu v Starom Meste</h3>
+          <svg viewBox="0 0 660 210" role="img" aria-label="Porovnanie ročného príjmu: dlhodobý prenájom 16 800 eur, krátkodobý prenájom so správou LIVE-IN 21 930 eur — rozdiel 30,5 percenta.">
+            <text class="chart-label" x="1" y="16">Dlhodobý prenájom</text>
+            <path class="bar" fill="#8b8578" d="M1 26 H357 Q361 26 361 30 V56 Q361 60 357 60 H1 Z">
+              <title>Dlhodobý prenájom: 16 800 € ročne (1 400 € mesačne)</title>
+            </path>
+            <text class="chart-value" x="375" y="52">16 800 €</text>
+            <text class="chart-label" x="1" y="116">Krátkodobý s LIVE-IN</text>
+            <path class="bar" fill="#ff870d" d="M1 126 H467 Q471 126 471 130 V156 Q471 160 467 160 H1 Z">
+              <title>Krátkodobý prenájom so správou LIVE-IN: cca 21 930 € ročne pri 70 % obsadenosti</title>
+            </path>
+            <text class="chart-value" x="485" y="152">21 930 €</text>
+            <line x1="1" y1="8" x2="1" y2="170" stroke="rgba(10,15,22,.3)" stroke-width="1"></line>
+          </svg>
+          <p class="yield-note">Reálny prípad z praxe LIVE-IN: 3-izbový byt v Starom Meste Bratislavy, máj 2025. Krátkodobý prenájom pri priemernej obsadenosti 70 %.</p>
+        </div>
+        <div class="yield-stats">
+          <div class="stat-tile stat-tile--accent">
+            <strong>+30,5 %</strong>
+            <span class="micro">Vyšší ročný príjem oproti dlhodobému prenájmu</span>
+          </div>
+          <div class="stat-tile">
+            <strong>70 %</strong>
+            <span class="micro">Priemerná obsadenosť našich bytov v roku 2024</span>
+          </div>
+          <div class="stat-tile">
+            <strong>17 %</strong>
+            <span class="micro">Provízia za kompletnú správu — žiadne skryté poplatky</span>
+          </div>
+        </div>
       </div>
 
       <div class="editorial__note">
@@ -1225,6 +1289,16 @@
           .sort((a, b) => Math.abs(a - frame) - Math.abs(b - frame));
         loadInBatches(byDistance, 8, activeStore);
       }
+
+      let pastFilm = false;
+      function updateHeaderVisibility() {
+        const past = window.scrollY > sequenceTop + sequenceDistance - 10;
+        if (past !== pastFilm) {
+          pastFilm = past;
+          document.body.classList.toggle("past-film", past);
+        }
+      }
+      window.addEventListener("scroll", updateHeaderVisibility, { passive: true });
 
       window.addEventListener("resize", () => {
         resizeCanvas();
