@@ -14,13 +14,23 @@ python3 -m http.server 8080
 ## Štruktúra
 
 ```
-index.html              — celý web (markup, štýly, scroll engine)
-frames/desktop/         — 75 snímok WebP 1920×1080 (5,3 MB)
-frames/mobile/          — 75 snímok WebP 960×540 (2,1 MB)
-frames/manifest.json    — metadáta extrakcie
+index.html              — domovská stránka (scroll film); en/index.html = EN verzia
+sluzby/  o-nas/  kontakt/  na-predaj/  clanky/        — SK podstránky
+nehnutelnost/<slug>/    — 8 detailov nehnuteľností (SK)
+en/services|about-us|contact|for-sale|articles/       — EN podstránky
+en/real-estate/<slug>/  — 8 detailov nehnuteľností (EN)
+clanky/<slug>/ · en/articles/<slug>/                  — 3 články v oboch jazykoch
+frames/                 — 75 snímok WebP (desktop 1920×1080, mobil 960×540)
 assets/fonts/           — self-hostované fonty Archivo + IBM Plex Mono
+assets/img/properties/  — fotografie nehnuteľností (zo starého webu)
 assets/source/hero.mp4  — zdrojové video (5 s, 1080p, Artlist AI)
+content/                — extrahovaný obsah starého webu (JSON + články)
+tools/build_pages.py    — generátor podstránok (python3 tools/build_pages.py)
 ```
+
+Podstránky preberajú kompletný obsah pôvodného webu live-in.international
+(služby, o nás, kontakt, ponuka nehnuteľností, články) v novom dizajne,
+v slovenčine aj angličtine s prepínačom jazyka.
 
 ## Obsah a fakty
 
