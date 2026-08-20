@@ -591,6 +591,21 @@ def build_properties(lang, list_path, list_current, root_list):
         status_cls = " prop-card__status--sold" if sold else ""
         list_url = f"{root}na-predaj/" if lang == "sk" else f"{root}en/for-sale/"
         img_slug = p.get("sk_slug") or p["slug"]
+        gallery_files = sorted((ROOT / "assets/img/properties/gallery" / img_slug).glob("*.webp"))
+        gallery_h = "Fotogaléria" if lang == "sk" else "Photo gallery"
+        alt_base = html.escape(p["title"], quote=True)
+        gallery_html = ""
+        if gallery_files:
+            shots = "".join(
+                f'<a href="{root}assets/img/properties/gallery/{img_slug}/{f.name}" target="_blank" rel="noopener">'
+                f'<img src="{root}assets/img/properties/gallery/{img_slug}/{f.name}" alt="{alt_base} — {gallery_h.lower()} {i}" loading="lazy" width="1400" height="933"></a>'
+                for i, f in enumerate(gallery_files, 1)
+            )
+            gallery_html = f"""<section class="prop-gallery-wrap">
+      <h2 class="micro" style="color:var(--alloy-dark);margin:0 0 14px">{gallery_h}</h2>
+      <div class="prop-gallery">{shots}</div>
+    </section>
+"""
         body = f"""<main>
   <img class="prop-hero" src="{root}assets/img/properties/{img_slug}.webp" alt="{html.escape(p["title"], quote=True)}" width="1400" height="933">
   <div class="section">
@@ -612,6 +627,7 @@ def build_properties(lang, list_path, list_current, root_list):
         <a class="paper-cta" style="width:100%;margin-top:18px" href="mailto:{EMAIL}?subject={html.escape(p["title"], quote=True)}">{T[lang]["interest"]}</a>
       </aside>
     </div>
+    {gallery_html}
   </div>
 </main>
 """
@@ -636,6 +652,18 @@ ARTICLES = {
 }
 
 
+EMOJI_RE = re.compile(
+    "[\U0001F000-\U0001FBFF\u2600-\u27BF\u2B00-\u2BFF\uFE0F\u200D\u20E3\u2934\u2935\u3297\u3299\u303D\u3030\u24C2\u2049\u203C]"
+)
+
+
+def strip_emoji(text):
+    text = EMOJI_RE.sub("", text)
+    text = re.sub(r"(<(?:h[1-4]|p|li|td|th)>)[\s\u00A0]+", r"\1", text)
+    text = re.sub(r"[ \u00A0]{2,}", " ", text)
+    return text.strip()
+
+
 def art_url(lang, slug):
     return f"/clanky/{slug}/" if lang == "sk" else f"/en/articles/{slug}/"
 
@@ -653,8 +681,8 @@ def build_articles(lang, list_path, list_current, root_list):
         m = meta[key]
         cards += f"""<a class="article-card" href="{root_list}{art_url(lang, slug).lstrip('/')}">
   <span class="micro">{t["published"]}</span>
-  <h2>{html.escape(m["title"])}</h2>
-  <p>{html.escape(m["desc"])}</p>
+  <h2>{html.escape(strip_emoji(m["title"]))}</h2>
+  <p>{html.escape(strip_emoji(m["desc"]))}</p>
   <span class="micro article-card__more">{t["read"]} →</span>
 </a>
 """
@@ -665,11 +693,13 @@ def build_articles(lang, list_path, list_current, root_list):
           + nav(root_list, lang, list_current) + body + footer(root_list, lang))
 
     for slug, key in ARTICLES[lang]:
-        m = meta[key]
-        content = wrap_tables((C / f"article-{key}.html").read_text())
+        m = dict(meta[key])
+        m["title"] = strip_emoji(m["title"])
+        m["desc"] = strip_emoji(m["desc"])
+        content = strip_emoji(wrap_tables((C / f"article-{key}.html").read_text()))
         root = "../../" if lang == "sk" else "../../../"
         others = "".join(
-            f'<li><a href="{root}{art_url(lang, s).lstrip("/")}">{html.escape(meta[k]["title"])}</a></li>'
+            f'<li><a href="{root}{art_url(lang, s).lstrip("/")}">{html.escape(strip_emoji(meta[k]["title"]))}</a></li>'
             for s, k in ARTICLES[lang] if s != slug
         )
         list_url = f"{root}clanky/" if lang == "sk" else f"{root}en/articles/"
@@ -809,6 +839,7 @@ HOME_TRANSLATIONS = [
     ("Vyšší ročný príjem oproti dlhodobému prenájmu", "Higher annual income vs. a long-term lease"),
     ("Priemerná obsadenosť našich bytov v roku 2024", "Average occupancy of our apartments in 2024"),
     ("Provízia za kompletnú správu — žiadne skryté poplatky", "Commission for full management — no hidden fees"),
+    (">Vyžiadajte si bezplatnú analýzu</a>", ">Request a free analysis</a>"),
 ]
 
 

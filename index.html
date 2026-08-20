@@ -612,6 +612,27 @@
       color: rgba(10, 15, 22, .68);
     }
 
+    .yield-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      min-height: 52px;
+      padding: 0 18px;
+      background: var(--night);
+      border: 1px solid var(--night);
+      color: var(--paper);
+      font-family: var(--data);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 250ms ease, color 250ms ease;
+    }
+
+    .yield-cta::after { content: "→"; font-size: 15px; }
+    .yield-cta:hover { background: transparent; color: var(--night); }
+
     .editorial__note {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -926,6 +947,7 @@
             <strong>17 %</strong>
             <span class="micro">Provízia za kompletnú správu — žiadne skryté poplatky</span>
           </div>
+          <a class="yield-cta" href="kontakt/">Vyžiadajte si bezplatnú analýzu</a>
         </div>
       </div>
 
