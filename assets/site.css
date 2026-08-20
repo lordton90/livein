@@ -683,10 +683,19 @@ a.paper-cta {
   .site-nav { padding-top: 12px; padding-bottom: 12px; }
 }
 
+.rv {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms ease, transform 700ms var(--ease-out);
+}
+
+.rv.is-in { opacity: 1; transform: none; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
+  .rv { opacity: 1; transform: none; transition: none; }
 }

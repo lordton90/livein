@@ -569,8 +569,32 @@
     }
 
     .yield-chart svg { display: block; width: 100%; height: auto; }
-    .yield-chart .bar { transition: opacity 200ms ease; }
+    .yield-chart .bar {
+      transform-box: fill-box;
+      transform-origin: left center;
+      transform: scaleX(0);
+      transition: transform 950ms var(--ease-out), opacity 200ms ease;
+    }
+    .yield-figure.is-in .bar { transform: scaleX(1); }
+    .yield-figure.is-in .bar--delay { transition-delay: 220ms; }
     .yield-chart .bar:hover { opacity: .84; }
+    .yield-chart .chart-value { opacity: 0; transition: opacity 500ms ease; }
+    .yield-figure.is-in .chart-value { opacity: 1; }
+    .yield-figure.is-in .chart-value:first-of-type { transition-delay: 500ms; }
+    .yield-figure.is-in .chart-value:last-of-type { transition-delay: 750ms; }
+
+    .rv {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms ease, transform 700ms var(--ease-out);
+    }
+    .rv.is-in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .yield-chart .bar { transform: none; transition: none; }
+      .yield-chart .chart-value { opacity: 1; transition: none; }
+      .rv { opacity: 1; transform: none; transition: none; }
+    }
 
     .yield-chart .chart-label {
       font-family: var(--data);
@@ -1334,6 +1358,66 @@
       }
       window.addEventListener("scroll", updateHeaderVisibility, { passive: true });
 
+      // --- chapter snap: one wheel gesture = one chapter, tweened glide ---
+      const SNAP_EFFECTIVES = DWELL_CENTERS;
+      let snapAnimating = false;
+      let snapCooldownUntil = 0;
+
+      function rawForEffective(effective) {
+        return rawAtEffective[Math.max(0, Math.min(LUT_SIZE, Math.round(effective * LUT_SIZE)))];
+      }
+
+      function animateScrollTo(targetY, duration) {
+        const startY = window.scrollY;
+        const delta = targetY - startY;
+        if (Math.abs(delta) < 1) return;
+        const t0 = performance.now();
+        snapAnimating = true;
+        const step = (now) => {
+          const p = Math.min(1, (now - t0) / duration);
+          const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+          window.scrollTo(0, startY + delta * eased);
+          if (p < 1) {
+            requestAnimationFrame(step);
+          } else {
+            snapAnimating = false;
+            snapCooldownUntil = performance.now() + 260;
+          }
+        };
+        requestAnimationFrame(step);
+      }
+
+      function onWheelSnap(event) {
+        if (reducedMotion) return;
+        const zoneStart = sequenceTop;
+        const zoneEnd = sequenceTop + sequenceDistance;
+        const y = window.scrollY;
+        const dir = event.deltaY > 0 ? 1 : -1;
+        const inZone = dir > 0 ? (y >= zoneStart - 2 && y < zoneEnd - 2) : (y > zoneStart + 2 && y <= zoneEnd + 2);
+        if (!inZone) return;
+        event.preventDefault();
+        if (snapAnimating || performance.now() < snapCooldownUntil || Math.abs(event.deltaY) < 4) return;
+
+        const effective = remapProgress(rawScrollProgress());
+        let nearest = 0;
+        for (let i = 1; i < SNAP_EFFECTIVES.length; i += 1) {
+          if (Math.abs(SNAP_EFFECTIVES[i] - effective) < Math.abs(SNAP_EFFECTIVES[nearest] - effective)) nearest = i;
+        }
+        let targetY;
+        if (dir > 0) {
+          if (nearest >= SNAP_EFFECTIVES.length - 1) targetY = zoneEnd;
+          else targetY = zoneStart + rawForEffective(SNAP_EFFECTIVES[nearest + 1]) * sequenceDistance;
+        } else if (nearest === 0) {
+          targetY = zoneStart;
+        } else {
+          const atOrBelowNearest = effective - SNAP_EFFECTIVES[nearest] > 0.02;
+          targetY = zoneStart + rawForEffective(SNAP_EFFECTIVES[atOrBelowNearest ? nearest : nearest - 1]) * sequenceDistance;
+        }
+        animateScrollTo(targetY, 900);
+      }
+
+      window.addEventListener("wheel", onWheelSnap, { passive: false });
+
       window.addEventListener("resize", () => {
         resizeCanvas();
         updateSequenceMetrics();
@@ -1348,6 +1432,62 @@
       });
 
       init();
+    })();
+  </script>
+
+  <script>
+    (() => {
+      "use strict";
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      function animateNumber(el, duration) {
+        const final = el.textContent;
+        const m = final.match(/^([^\d]*)([\d\u00A0 ]+)(?:([.,])(\d+))?([^\d]*)$/);
+        if (!m) return;
+        const pre = m[1], sep = m[3] || "", dec = m[4] || "", suf = m[5];
+        const decimals = dec.length;
+        const target = parseFloat(m[2].replace(/[\s\u00A0]/g, "") + (dec ? "." + dec : ""));
+        const t0 = performance.now();
+        const fmt = (v) => {
+          const parts = v.toFixed(decimals).split(".");
+          const i = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "\u00A0");
+          return pre + i + (decimals ? sep + parts[1] : "") + suf;
+        };
+        const step = (now) => {
+          const p = Math.min(1, (now - t0) / duration);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt(target * eased);
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = final;
+        };
+        requestAnimationFrame(step);
+      }
+
+      const yieldFigure = document.querySelector(".yield-figure");
+      let counted = false;
+      const io = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("is-in");
+          if (entry.target === yieldFigure && !counted) {
+            counted = true;
+            document.querySelectorAll(".yield-chart .chart-value").forEach((el, i) => {
+              window.setTimeout(() => animateNumber(el, 1000), 350 + i * 220);
+            });
+            document.querySelectorAll(".stat-tile strong").forEach((el, i) => {
+              window.setTimeout(() => animateNumber(el, 900), 250 + i * 180);
+            });
+          }
+          io.unobserve(entry.target);
+        }
+      }, { threshold: 0.25, rootMargin: "0px 0px -5% 0px" });
+
+      if (yieldFigure) io.observe(yieldFigure);
+      document.querySelectorAll(".editorial__head, .editorial .service, .stat-tile, .yield-cta, .yield-chart, .editorial__note").forEach((el, i) => {
+        el.classList.add("rv");
+        el.style.transitionDelay = `${(i % 4) * 80}ms`;
+        io.observe(el);
+      });
     })();
   </script>
 </body>

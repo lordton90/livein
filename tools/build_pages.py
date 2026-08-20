@@ -162,6 +162,22 @@ def footer(root, lang):
     <span><a href="{FACEBOOK}">Facebook</a> · <a href="{INSTAGRAM}">Instagram</a> · <a href="{BOOKING}">Booking</a></span>
   </div>
 </footer>
+<script>
+(() => {{
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const io = new IntersectionObserver((entries) => {{
+    for (const entry of entries) {{
+      if (entry.isIntersecting) {{ entry.target.classList.add("is-in"); io.unobserve(entry.target); }}
+    }}
+  }}, {{ threshold: 0.15, rootMargin: "0px 0px -5% 0px" }});
+  const sel = ".page-hero__eyebrow, .page-hero h1, .page-hero__lead, .section__head, .service-article, .prop-card, .article-card, .contact-tile, .value-tile, .prop-gallery a, .contact-form, .cta-band h2, .cta-band .cta-solid, .editorial__note";
+  document.querySelectorAll(sel).forEach((el, i) => {{
+    el.classList.add("rv");
+    el.style.transitionDelay = ((i % 4) * 80) + "ms";
+    io.observe(el);
+  }});
+}})();
+</script>
 </body>
 </html>
 """
