@@ -5,7 +5,11 @@ on:
     inputs:
       manifest:
         description: JSON array of {url, path} objects
-        required: true
+        required: false
+        type: string
+      manifest_path:
+        description: Repo-relative path to a JSON manifest file (used when manifest is empty)
+        required: false
         type: string
 
 permissions:
@@ -19,8 +23,12 @@ jobs:
       - name: Download and commit assets
         env:
           MANIFEST: ${{ inputs.manifest }}
+          MANIFEST_PATH: ${{ inputs.manifest_path }}
         run: |
           set -euo pipefail
+          if [ -z "$MANIFEST" ] && [ -n "$MANIFEST_PATH" ]; then
+            MANIFEST=$(cat "$MANIFEST_PATH")
+          fi
           echo "$MANIFEST" | jq -c '.[]' | while read -r item; do
             url=$(echo "$item" | jq -r .url)
             path=$(echo "$item" | jq -r .path)
